@@ -8,13 +8,20 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "contact_messages")
+@Table(
+        name = "contact_messages",
+        indexes = {
+                @Index(name = "idx_contact_status", columnList = "status"),
+                @Index(name = "idx_contact_created", columnList = "created_at")
+        }
+)
 public class ContactMessage {
 
     @Id

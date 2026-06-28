@@ -6,10 +6,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +20,16 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "product_variants")
+@Table(
+        name = "product_variants",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_variants_sku", columnNames = "sku")
+        },
+        indexes = {
+                @Index(name = "idx_variants_product", columnList = "product_id"),
+                @Index(name = "idx_variants_active", columnList = "is_active")
+        }
+)
 public class ProductVariant {
 
     @Id
@@ -29,7 +40,7 @@ public class ProductVariant {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(nullable = false, unique = true, length = 80)
+    @Column(nullable = false, length = 80)
     private String sku;
 
     @Column(name = "variant_name", length = 120)

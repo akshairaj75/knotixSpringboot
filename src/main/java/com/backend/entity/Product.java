@@ -9,10 +9,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +23,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "products")
+@Table(
+        name = "products",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_products_slug", columnNames = "slug")
+        },
+        indexes = {
+                @Index(name = "idx_products_category", columnList = "category_id"),
+                @Index(name = "idx_products_status", columnList = "status"),
+                @Index(name = "idx_products_featured", columnList = "is_featured")
+        }
+)
 public class Product {
 
     @Id
@@ -35,7 +47,7 @@ public class Product {
     @Column(nullable = false, length = 180)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 220)
+    @Column(nullable = false, length = 220)
     private String slug;
 
     @Column(name = "short_description", length = 300)

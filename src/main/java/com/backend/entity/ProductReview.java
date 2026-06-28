@@ -6,15 +6,26 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "product_reviews")
+@Table(
+        name = "product_reviews",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_review_user_product", columnNames = {"user_id", "product_id"})
+        },
+        indexes = {
+                @Index(name = "idx_reviews_product", columnList = "product_id"),
+                @Index(name = "idx_reviews_approved", columnList = "is_approved")
+        }
+)
 public class ProductReview {
 
     @Id

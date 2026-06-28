@@ -6,14 +6,24 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "wishlists")
+@Table(
+        name = "wishlists",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_wishlists_user_product", columnNames = {"user_id", "product_id"})
+        },
+        indexes = {
+                @Index(name = "idx_wishlists_user", columnList = "user_id")
+        }
+)
 public class Wishlist {
 
     @Id

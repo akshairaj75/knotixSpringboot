@@ -10,10 +10,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,14 +24,25 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "orders")
+@Table(
+        name = "orders",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_orders_order_no", columnNames = "order_no")
+        },
+        indexes = {
+                @Index(name = "idx_orders_user", columnList = "user_id"),
+                @Index(name = "idx_orders_status", columnList = "status"),
+                @Index(name = "idx_orders_payment_status", columnList = "payment_status"),
+                @Index(name = "idx_orders_placed_at", columnList = "placed_at")
+        }
+)
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "order_no", nullable = false, unique = true, length = 40)
+    @Column(name = "order_no", nullable = false, length = 40)
     private String orderNo;
 
     @ManyToOne(fetch = FetchType.LAZY)

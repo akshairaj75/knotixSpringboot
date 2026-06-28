@@ -6,15 +6,26 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "cart_items")
+@Table(
+        name = "cart_items",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_cart_variant", columnNames = {"cart_id", "variant_id"})
+        },
+        indexes = {
+                @Index(name = "idx_cart_items_cart", columnList = "cart_id"),
+                @Index(name = "idx_cart_items_variant", columnList = "variant_id")
+        }
+)
 public class CartItem {
 
     @Id

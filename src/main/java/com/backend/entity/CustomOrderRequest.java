@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -18,7 +19,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "custom_order_requests")
+@Table(
+        name = "custom_order_requests",
+        indexes = {
+                @Index(name = "idx_custom_user", columnList = "user_id"),
+                @Index(name = "idx_custom_status", columnList = "status"),
+                @Index(name = "idx_custom_created", columnList = "created_at")
+        }
+)
 public class CustomOrderRequest {
 
     @Id

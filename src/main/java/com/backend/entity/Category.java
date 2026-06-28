@@ -6,10 +6,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "categories")
+@Table(
+        name = "categories",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uq_categories_slug", columnNames = "slug")
+        },
+        indexes = {
+                @Index(name = "idx_categories_parent", columnList = "parent_id"),
+                @Index(name = "idx_categories_active", columnList = "is_active"),
+                @Index(name = "idx_categories_sort", columnList = "sort_order")
+        }
+)
 public class Category {
 
     @Id
@@ -31,7 +43,7 @@ public class Category {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 120)
+    @Column(nullable = false, length = 120)
     private String slug;
 
     @Column(columnDefinition = "TEXT")
