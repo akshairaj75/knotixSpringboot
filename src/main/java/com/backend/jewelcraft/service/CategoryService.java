@@ -1,28 +1,33 @@
 package com.backend.jewelcraft.service;
 
-import com.backend.jewelcraft.entity.Category;
 import java.util.List;
-import java.util.Optional;
+
+import com.backend.jewelcraft.dto.categoryDto.CategoryRequestDto;
+import com.backend.jewelcraft.dto.categoryDto.CategoryResponseDto;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface CategoryService {
 
-    Category create(Category category);
+    CategoryResponseDto createCategory(CategoryRequestDto dto, HttpServletRequest request);
 
-    Category update(Long id, Category category);
+    List<CategoryResponseDto> getAllCategories(HttpServletRequest request);
 
-    Category getById(Long id);
+    // Category update(Long id, Category category);
 
-    List<Category> getAll();
+    // Category getById(Long id);
 
-    void delete(Long id);
+    // List<Category> getAll();
 
-    Optional<Category> getBySlug(String slug);
+    // void delete(Long id);
 
-    boolean existsBySlug(String slug);
+    // Optional<Category> getBySlug(String slug);
 
-    List<Category> getRootCategories();
+    // boolean existsBySlug(String slug);
 
-    List<Category> getByParentId(Long parentId);
+    // List<Category> getRootCategories();
 
-    List<Category> getActiveCategories();
+    // List<Category> getByParentId(Long parentId);
+
+    // List<Category> getActiveCategories();
 }

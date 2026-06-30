@@ -1,29 +1,34 @@
 package com.backend.jewelcraft.service;
 
-import com.backend.jewelcraft.entity.Product;
-import com.backend.jewelcraft.enums.ProductStatus;
-import java.util.List;
-import java.util.Optional;
+import com.backend.jewelcraft.dto.productDto.ProductRequestDto;
+import com.backend.jewelcraft.dto.productDto.ProductResponseDto;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 
 public interface ProductService {
 
-    Product create(Product product);
+    // Product create(ProductRequestDto product);
 
-    Product update(Long id, Product product);
+	ProductResponseDto createProduct(ProductRequestDto product, HttpServletRequest request);
 
-    Product getById(Long id);
+    // Product update(Long id, Product product);
 
-    List<Product> getAll();
+    // Product getById(Long id);
 
-    void delete(Long id);
+    // List<Product> getAll();
 
-    Optional<Product> getBySlug(String slug);
+    // void delete(Long id);
 
-    boolean existsBySlug(String slug);
+    // Optional<Product> getBySlug(String slug);
 
-    List<Product> getByCategoryId(Long categoryId);
+    // boolean existsBySlug(String slug);
 
-    List<Product> getByStatus(ProductStatus status);
+    // List<Product> getByCategoryId(Long categoryId);
 
-    List<Product> getFeaturedProducts();
+    // List<Product> getByStatus(ProductStatus status);
+
+    // List<Product> getFeaturedProducts();
+
+    //============================================
 }

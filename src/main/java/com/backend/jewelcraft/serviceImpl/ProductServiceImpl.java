@@ -1,75 +1,60 @@
 package com.backend.jewelcraft.serviceImpl;
 
+import com.backend.jewelcraft.dto.productDto.ProductImageRequestDto;
+import com.backend.jewelcraft.dto.productDto.ProductRequestDto;
+import com.backend.jewelcraft.dto.productDto.ProductResponseDto;
+import com.backend.jewelcraft.entity.Category;
 import com.backend.jewelcraft.entity.Product;
-import com.backend.jewelcraft.enums.ProductStatus;
+import com.backend.jewelcraft.entity.ProductImage;
+import com.backend.jewelcraft.repository.CategoryRepository;
+import com.backend.jewelcraft.repository.ProductImageRepository;
 import com.backend.jewelcraft.repository.ProductRepository;
 import com.backend.jewelcraft.service.ProductService;
 
-import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    @Autowired
+    CategoryRepository categorytRepository;
 
+    @Autowired
+    ProductImageRepository imageRepository;
+
+    @Transactional
     @Override
-    public Product create(Product product) {
-        return productRepository.save(product);
+    public ProductResponseDto createProduct(ProductRequestDto dto, HttpServletRequest request) {
+        Category category = categorytRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("No category found for you request"));
+
+        Product product = new Product();
+        product.setName(dto.getName());
+        product.setSlug(dto.getSlug());
+        product.setStatus(dto.getStatus());
+        product.setDescription(dto.getDescription());
+        product.setBasePrice(dto.getBasePrice());
+        product.setCategory(category);
+
+        Product savedProduct = productRepository.save(product);
+
+        if (dto.getImageUrl() != null) {
+            ProductImage image = new ProductImage();
+            image.setProduct(savedProduct);
+            image.setImageUrl(dto.getImageUrl());
+            image.setAltText("image");
+            imageRepository.save(image);
+        }
+
+        return ProductResponseDto.fromEntity(savedProduct);
+
     }
 
-    @Override
-    public Product update(Long id, Product product) {
-        getById(id);
-        product.setId(id);
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Product getById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
-    }
-
-    @Override
-    public List<Product> getAll() {
-        return productRepository.findAll();
-    }
-
-    @Override
-    public void delete(Long id) {
-        getById(id);
-        productRepository.deleteById(id);
-    }
-
-    @Override
-    public Optional<Product> getBySlug(String slug) {
-        return productRepository.findBySlug(slug);
-    }
-
-    @Override
-    public boolean existsBySlug(String slug) {
-        return productRepository.existsBySlug(slug);
-    }
-
-    @Override
-    public List<Product> getByCategoryId(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
-    }
-
-    @Override
-    public List<Product> getByStatus(ProductStatus status) {
-        return productRepository.findByStatus(status);
-    }
-
-    @Override
-    public List<Product> getFeaturedProducts() {
-        return productRepository.findByFeaturedTrue();
-    }
 }

@@ -56,5 +56,8 @@ public class AddressServiceImpl implements AddressService {
     public Optional<Address> getDefaultAddressByUserId(Long userId) {
         return addressRepository.findByUserIdAndDefaultAddressTrue(userId);
     }
-}
 
+
+    
+
+}
