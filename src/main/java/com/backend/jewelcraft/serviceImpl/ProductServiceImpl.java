@@ -14,6 +14,8 @@ import com.backend.jewelcraft.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +57,49 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductResponseDto.fromEntity(savedProduct);
 
+    }
+
+    @Override
+    public List<ProductResponseDto> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(ProductResponseDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public ProductResponseDto updateProduct(ProductRequestDto dto, HttpServletRequest request, Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("No product found for your request"));
+
+        Category category = categorytRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("No category found for your request"));
+
+        product.setName(dto.getName());
+        product.setSlug(dto.getSlug());
+        product.setStatus(dto.getStatus());
+        product.setDescription(dto.getDescription());
+        product.setBasePrice(dto.getBasePrice());
+        product.setCategory(category);
+
+        Product savedProduct = productRepository.save(product);
+
+        if (dto.getImageUrl() != null) {
+            ProductImage image = new ProductImage();
+            image.setProduct(savedProduct);
+            image.setImageUrl(dto.getImageUrl());
+            image.setAltText("image");
+            imageRepository.save(image);
+        }
+
+        return ProductResponseDto.fromEntity(savedProduct);
+    }
+
+    @Override
+    public ProductResponseDto getProductById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("No product found for your request"));
+        return ProductResponseDto.fromEntity(product);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.backend.jewelcraft.service;
 
+import java.util.List;
+
 import com.backend.jewelcraft.dto.productDto.ProductRequestDto;
 import com.backend.jewelcraft.dto.productDto.ProductResponseDto;
 
@@ -11,6 +13,12 @@ public interface ProductService {
     // Product create(ProductRequestDto product);
 
 	ProductResponseDto createProduct(ProductRequestDto product, HttpServletRequest request);
+
+    List<ProductResponseDto> getAllProducts();
+
+    ProductResponseDto updateProduct(ProductRequestDto product, HttpServletRequest request, Long productId);
+
+    ProductResponseDto getProductById(Long productId);
 
     // Product update(Long id, Product product);
 

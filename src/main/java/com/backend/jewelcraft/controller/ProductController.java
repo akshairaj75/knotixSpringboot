@@ -4,10 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,8 @@ import com.backend.jewelcraft.dto.productDto.ProductResponseDto;
 import com.backend.jewelcraft.service.ProductService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/products")
@@ -46,8 +49,25 @@ public class ProductController {
 
     }
 
-    @GetMapping
-    public String getAllProducts() {
-        return "All products";
+    @GetMapping("/get-products")
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        List<ProductResponseDto> res = productService.getAllProducts();
+        return ResponseEntity.ok(res);
     }
+
+    @PutMapping("/update-product/{productId}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @RequestBody ProductRequestDto product,
+            @PathVariable Long productId,
+            HttpServletRequest request) {
+        ProductResponseDto res = productService.updateProduct(product, request, productId);
+        return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/view-product/{productId}")
+    public ResponseEntity<ProductResponseDto> viewProduct(@PathVariable Long productId) {
+        ProductResponseDto res = productService.getProductById(productId);
+        return ResponseEntity.ok(res);
+    }
+    
 }
