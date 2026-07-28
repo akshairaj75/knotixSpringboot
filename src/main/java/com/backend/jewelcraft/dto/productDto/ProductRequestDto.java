@@ -8,6 +8,7 @@ public class ProductRequestDto {
     private Long categoryId;
     private String name;
     private String slug;
+    private String sku;
     private String shortDescription;
     private String description;
     private BigDecimal basePrice;
@@ -17,14 +18,14 @@ public class ProductRequestDto {
     private ProductStatus status;
     private Boolean isFeatured;
 
-    private String imageUrl;
+    private Integer stock;
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Integer getStock() {
+        return stock;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public ProductRequestDto() {
@@ -52,6 +53,14 @@ public class ProductRequestDto {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getShortDescription() {

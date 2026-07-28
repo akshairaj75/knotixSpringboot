@@ -8,15 +8,17 @@ import com.backend.jewelcraft.dto.productDto.ProductResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface ProductService {
 
     // Product create(ProductRequestDto product);
 
-	ProductResponseDto createProduct(ProductRequestDto product, HttpServletRequest request);
+	ProductResponseDto createProduct(ProductRequestDto product, MultipartFile image, HttpServletRequest request);
 
     List<ProductResponseDto> getAllProducts();
 
-    ProductResponseDto updateProduct(ProductRequestDto product, HttpServletRequest request, Long productId);
+    ProductResponseDto updateProduct(ProductRequestDto product, MultipartFile image, HttpServletRequest request, Long productId);
 
     ProductResponseDto getProductById(Long productId);
 

@@ -50,6 +50,9 @@ public class Product {
     @Column(nullable = false, length = 220)
     private String slug;
 
+    @Column(name = "sku", length = 100)
+    private String sku;
+
     @Column(name = "short_description", length = 300)
     private String shortDescription;
 
@@ -128,6 +131,14 @@ public class Product {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public String getShortDescription() {

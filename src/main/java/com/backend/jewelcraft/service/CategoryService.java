@@ -13,6 +13,12 @@ public interface CategoryService {
 
     List<CategoryResponseDto> getAllCategories(HttpServletRequest request);
 
+    CategoryResponseDto getCategoryById(Long id, HttpServletRequest request);
+
+    CategoryResponseDto updateCategory(Long id, CategoryRequestDto dto, HttpServletRequest request);
+
+    void deleteCategory(Long id, HttpServletRequest request);
+
     // Category update(Long id, Category category);
 
     // Category getById(Long id);

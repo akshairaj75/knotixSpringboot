@@ -13,6 +13,7 @@ public class ProductResponseDto {
     private String categoryName;
     private String name;
     private String slug;
+    private String sku;
     private String shortDescription;
     private String description;
     private BigDecimal basePrice;
@@ -41,6 +42,7 @@ public class ProductResponseDto {
         }
         dto.setName(entity.getName());
         dto.setSlug(entity.getSlug());
+        dto.setSku(entity.getSku());
         dto.setShortDescription(entity.getShortDescription());
         dto.setDescription(entity.getDescription());
         dto.setBasePrice(entity.getBasePrice());
@@ -70,6 +72,8 @@ public class ProductResponseDto {
     public void setName(String name) { this.name = name; }
     public String getSlug() { return slug; }
     public void setSlug(String slug) { this.slug = slug; }
+    public String getSku() { return sku; }
+    public void setSku(String sku) { this.sku = sku; }
     public String getShortDescription() { return shortDescription; }
     public void setShortDescription(String shortDescription) { this.shortDescription = shortDescription; }
     public String getDescription() { return description; }
