@@ -23,17 +23,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(
-        name = "products",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "uq_products_slug", columnNames = "slug")
-        },
-        indexes = {
-                @Index(name = "idx_products_category", columnList = "category_id"),
-                @Index(name = "idx_products_status", columnList = "status"),
-                @Index(name = "idx_products_featured", columnList = "is_featured")
-        }
-)
+@Table(name = "products", uniqueConstraints = {
+// @UniqueConstraint(name = "uq_products_slug", columnNames = "slug")
+}, indexes = {
+        @Index(name = "idx_products_category", columnList = "category_id"),
+        @Index(name = "idx_products_status", columnList = "status"),
+        @Index(name = "idx_products_featured", columnList = "is_featured")
+})
 public class Product {
 
     @Id
